@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_nav_room_available"
+        android:icon="@drawable/ic_room_available"
+        android:title="@string/room_available"/>
+    <item
+        android:id="@+id/menu_nav_room_renting"
+        android:icon="@drawable/ic_room_renting"
+        android:title="@string/room_renting"/>
+    <item
+        android:id="@+id/menu_nav_room_add"
+        android:icon="@drawable/ic_add_room"
+        android:title="@string/room_add"/>
+</menu>
