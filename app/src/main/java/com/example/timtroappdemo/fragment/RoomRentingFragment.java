@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,10 +32,16 @@ public class RoomRentingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_roomrenting, container, false);
 
         rcvRoomRenting = view.findViewById(R.id.rcv_roomrenting);
-        roomRentingAdapter = new RoomRentingAdapter(getActivity());
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rcvRoomRenting.setLayoutManager(linearLayoutManager);
+
+        roomRentingAdapter = new RoomRentingAdapter(getListRoom(), new RoomRentingAdapter.IClickRoomRenting() {
+            @Override
+            public void clickRoomRenting(RoomRenting roomRenting) {
+                Toast.makeText(getContext(),"Is Click to "+roomRenting.getRoomTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         roomRentingAdapter.setData(getListRoom());
         rcvRoomRenting.setAdapter(roomRentingAdapter);

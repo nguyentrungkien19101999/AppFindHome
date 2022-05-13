@@ -52,9 +52,9 @@ public class RoomAvailableAdapter extends RecyclerView.Adapter<RoomAvailableAdap
             return;
         }
         holder.tvTitle.setText(roomAvailable.getRoomTitle());
-        holder.tvPrice.setText(roomAvailable.getRoomPrice());
-        holder.tvAddress.setText(roomAvailable.getRoomAddress());
-        holder.tvDescription.setText(roomAvailable.getRoomDescription());
+        holder.tvPrice.setText("Giá: "+roomAvailable.getRoomPrice());
+        holder.tvAddress.setText("Địa chỉ: "+roomAvailable.getRoomAddress());
+        holder.tvDescription.setText("Mô tả: "+roomAvailable.getRoomDescription());
         holder.imgAvatar.setImageResource(roomAvailable.getRoomImage());
 
         holder.layoutRoomAvailable.setOnClickListener(new View.OnClickListener() {

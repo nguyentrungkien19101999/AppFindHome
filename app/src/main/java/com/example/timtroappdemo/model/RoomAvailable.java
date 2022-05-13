@@ -2,16 +2,20 @@ package com.example.timtroappdemo.model;
 
 public class RoomAvailable {
     private int roomImage;
+    private int roomId;
     private String roomTitle;
     private String roomPrice;
     private String roomAddress;
+    private String roomPhone;
     private String roomDescription;
 
-    public RoomAvailable(int roomImage, String roomTitle, String roomPrice, String roomAddress, String roomDescription) {
+    public RoomAvailable(int roomImage, int roomId, String roomTitle, String roomPrice, String roomAddress, String roomPhone, String roomDescription) {
         this.roomImage = roomImage;
+        this.roomId = roomId;
         this.roomTitle = roomTitle;
         this.roomPrice = roomPrice;
         this.roomAddress = roomAddress;
+        this.roomPhone = roomPhone;
         this.roomDescription = roomDescription;
     }
 
@@ -53,5 +57,21 @@ public class RoomAvailable {
 
     public void setRoomImage(int roomImage) {
         this.roomImage = roomImage;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getRoomPhone() {
+        return roomPhone;
+    }
+
+    public void setRoomPhone(String roomPhone) {
+        this.roomPhone = roomPhone;
     }
 }

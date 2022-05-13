@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.adapter.RoomAvailableAdapter;
 import com.example.timtroappdemo.model.RoomAvailable;
+import com.example.timtroappdemo.view.InforRoomAvailable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,9 @@ public class RoomAvailableFragment extends Fragment {
         roomAvailableAdapter = new RoomAvailableAdapter(getListRoom(), new RoomAvailableAdapter.IClickRoomAvailable() {
             @Override
             public void clickRoomAvailable(RoomAvailable roomAvailable) {
-                Toast.makeText(getContext(),"Is Click Item Room " + roomAvailable.getRoomTitle(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), InforRoomAvailable.class);
+                startActivity(intent);
+//                Toast.makeText(getContext(),"Is Click Item Room " + roomAvailable.getRoomTitle(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -51,10 +54,10 @@ public class RoomAvailableFragment extends Fragment {
 
     private List<RoomAvailable> getListRoom() {
         List<RoomAvailable> list = new ArrayList<>();
-        list.add(new RoomAvailable(R.drawable.room1, "Xóm trọ cô Thủy", "2000000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên, Thai Nguyen", "Phòng 20m2, điều hòa điện nước đầy đủ"));
-        list.add(new RoomAvailable(R.drawable.room2, "Xóm trọ cô Thu", "1500000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên", "Phòng 20m2, điều hòa điện nước đầy đủ"));
-        list.add(new RoomAvailable(R.drawable.room1, "Xóm trọ cô Thanh", "1000000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên, Thai Nguyen", "Phòng 20m2, điều hòa điện nước đầy đủ, giuong tu quan ao, may giat"));
-        list.add(new RoomAvailable(R.drawable.room2, "Xóm trọ chú Hùng", "500000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên", "Phòng 20m2, điều hòa điện nước đầy đủ"));
+        list.add(new RoomAvailable(R.drawable.room1, 01,"Xóm trọ cô Thủy", "2000000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên, Thai Nguyen", "0358387888","Phòng 20m2, điều hòa điện nước đầy đủ"));
+        list.add(new RoomAvailable(R.drawable.room2, 02,"Xóm trọ cô Thu", "1500000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên", "0165878785","Phòng 20m2, điều hòa điện nước đầy đủ"));
+        list.add(new RoomAvailable(R.drawable.room1, 03,"Xóm trọ cô Thanh", "1000000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên, Thai Nguyen", "0358987457","Phòng 20m2, điều hòa điện nước đầy đủ, giuong tu quan ao, may giat"));
+        list.add(new RoomAvailable(R.drawable.room2, 04,"Xóm trọ chú Hùng", "500000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên", "098574745","Phòng 20m2, điều hòa điện nước đầy đủ"));
 
         return list;
     }

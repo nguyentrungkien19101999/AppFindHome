@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,11 +19,16 @@ import java.util.List;
 
 public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.RoomRentingViewHolder>{
 
-    private Context mContext;
     private List<RoomRenting> mListRoom;
+    private IClickRoomRenting mClickRoomRenting;
 
-    public RoomRentingAdapter(Context context) {
-        this.mContext = context;
+    public RoomRentingAdapter(List<RoomRenting> mListRoom, IClickRoomRenting mClickRoomRenting) {
+        this.mListRoom = mListRoom;
+        this.mClickRoomRenting = mClickRoomRenting;
+    }
+
+    public interface IClickRoomRenting{
+        void clickRoomRenting(RoomRenting roomRenting);
     }
 
     public void setData(List<RoomRenting> list){
@@ -44,11 +50,17 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
             return;
         }
         holder.tvTitle.setText(roomRenting.getRoomTitle());
-        holder.tvPrice.setText(roomRenting.getRoomPrice());
-        holder.tvAddress.setText(roomRenting.getRoomAddress());
-        holder.tvDescription.setText(roomRenting.getRoomDescription());
+        holder.tvPrice.setText("Giá: "+roomRenting.getRoomPrice());
+        holder.tvAddress.setText("Địa chỉ: "+roomRenting.getRoomAddress());
+        holder.tvDescription.setText("Mô tả: "+roomRenting.getRoomDescription());
         holder.imgAvatar.setImageResource(roomRenting.getRoomImage());
 
+        holder.layoutRoomRenting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickRoomRenting.clickRoomRenting(roomRenting);
+            }
+        });
     }
 
     @Override
@@ -61,9 +73,9 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
 
     public static class RoomRentingViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imgAvatar;
-        TextView tvTitle, tvPrice, tvAddress, tvDescription;
-
+        private ImageView imgAvatar;
+        private TextView tvTitle, tvPrice, tvAddress, tvDescription;
+        private RelativeLayout layoutRoomRenting;
         public RoomRentingViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -72,7 +84,7 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
             tvAddress = itemView.findViewById(R.id.tv_address);
             tvDescription = itemView.findViewById(R.id.tv_description);
             imgAvatar = itemView.findViewById(R.id.img_room_avatar);
-
+            layoutRoomRenting = itemView.findViewById(R.id.layout_room);
         }
     }
 }
