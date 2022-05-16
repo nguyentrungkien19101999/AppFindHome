@@ -3,4 +3,10 @@
     <string name="room_available">Phòng Trống</string>
     <string name="room_renting">Phòng Đang Thuê</string>
     <string name="room_add">Thêm Phòng</string>
+    <string name="hint_title">Tiêu đề phòng</string>
+    <string name="hint_price">Giá phòng</string>
+    <string name="hint_address">Địa chỉ</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="hint_description">Mô tả</string>
+
 </resources>

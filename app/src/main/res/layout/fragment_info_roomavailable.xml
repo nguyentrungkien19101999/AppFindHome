@@ -1,21 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.viewpager2.widget.ViewPager2
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:id="@+id/view_pager2"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:id="@+id/ll_view">
 
-    <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/circle_indicator3"
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/view_pager2"/>
+
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/circle_indicator3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            app:ci_drawable="@drawable/bg_indicator"/>
+    </LinearLayout>
+
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="5dp"
-        app:ci_drawable="@drawable/bg_indicator"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        android:layout_below="@+id/ll_view"
+        android:padding="5dp"
+        android:text="Title"
+        android:textSize="20sp"/>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_price"
+        android:layout_below="@+id/tv_title"
+        android:padding="5dp"
+        android:text="Title"
+        android:textSize="16sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_address"
+        android:layout_below="@+id/tv_price"
+        android:padding="5dp"
+        android:text="Title"
+        android:textSize="16sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_phone"
+        android:layout_below="@+id/tv_address"
+        android:padding="5dp"
+        android:text="Title"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_description"
+        android:layout_below="@+id/tv_phone"
+        android:padding="5dp"
+        android:text="Title"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_status"
+        android:layout_below="@+id/tv_description"
+        android:padding="5dp"
+        android:text="Title"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/btn_edit"
+        android:src="@drawable/btn_edit"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/btn_delete"
+        android:src="@drawable/btn_delete"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        />
+</RelativeLayout>

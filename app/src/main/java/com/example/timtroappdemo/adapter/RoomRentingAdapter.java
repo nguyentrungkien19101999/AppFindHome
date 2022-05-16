@@ -1,6 +1,5 @@
 package com.example.timtroappdemo.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timtroappdemo.R;
-import com.example.timtroappdemo.model.RoomAvailable;
 import com.example.timtroappdemo.model.RoomRenting;
 
 import java.util.List;
@@ -39,7 +37,7 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
     @NonNull
     @Override
     public RoomRentingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_rcv_roomrenting, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_roomrenting, parent, false);
         return new RoomRentingViewHolder(view);
     }
 

@@ -1,22 +1,18 @@
 package com.example.timtroappdemo.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.model.RoomAvailable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoomAvailableAdapter extends RecyclerView.Adapter<RoomAvailableAdapter.RoomAvailableViewHolder>{
@@ -41,7 +37,7 @@ public class RoomAvailableAdapter extends RecyclerView.Adapter<RoomAvailableAdap
     @NonNull
     @Override
     public RoomAvailableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_rcv_roomavailable, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_roomavailable, parent, false);
         return new RoomAvailableViewHolder(view);
     }
 
