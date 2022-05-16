@@ -1,5 +1,6 @@
 package com.example.timtroappdemo.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.timtroappdemo.adapter.RoomAvailableAdapter;
 import com.example.timtroappdemo.adapter.RoomRentingAdapter;
 import com.example.timtroappdemo.model.RoomAvailable;
 import com.example.timtroappdemo.model.RoomRenting;
+import com.example.timtroappdemo.view.InforRoomAvailable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,8 @@ public class RoomRentingFragment extends Fragment {
         roomRentingAdapter = new RoomRentingAdapter(getListRoom(), new RoomRentingAdapter.IClickRoomRenting() {
             @Override
             public void clickRoomRenting(RoomRenting roomRenting) {
-                Toast.makeText(getContext(),"Is Click to "+roomRenting.getRoomTitle(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), InforRoomAvailable.class);
+                startActivity(intent);
             }
         });
 

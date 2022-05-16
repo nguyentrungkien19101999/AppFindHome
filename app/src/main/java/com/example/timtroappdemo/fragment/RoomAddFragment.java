@@ -38,6 +38,7 @@ public class RoomAddFragment extends Fragment {
 
         btnSelectPhoto = view.findViewById(R.id.btn_selectPhoto);
         rcvPhoto = view.findViewById(R.id.rcv_photo);
+        mPhotoAddAdapter = new PhotoAddAdapter(getContext());
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rcvPhoto.setLayoutManager(gridLayoutManager);
@@ -83,6 +84,7 @@ public class RoomAddFragment extends Fragment {
                     public void onImagesSelected(List<Uri> uriList) {
                         if (uriList != null && !uriList.isEmpty()){
                             mPhotoAddAdapter.setData(uriList);
+                            btnSelectPhoto.setText("Thay đổi ảnh mô tả");
                         }
                     }
                 });
