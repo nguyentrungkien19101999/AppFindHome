@@ -1,5 +1,6 @@
 package com.example.timtroappdemo.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.model.RoomRenting;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.RoomRentingViewHolder>{
 
+    private Context mContext;
     private List<RoomRenting> mListRoom;
     private IClickRoomRenting mClickRoomRenting;
 
-    public RoomRentingAdapter(List<RoomRenting> mListRoom, IClickRoomRenting mClickRoomRenting) {
+    public RoomRentingAdapter(Context mContext, List<RoomRenting> mListRoom, IClickRoomRenting mClickRoomRenting) {
+        this.mContext = mContext;
         this.mListRoom = mListRoom;
         this.mClickRoomRenting = mClickRoomRenting;
     }
@@ -29,9 +33,10 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
         void clickRoomRenting(RoomRenting roomRenting);
     }
 
-    public void setData(List<RoomRenting> list){
-        this.mListRoom = list;
-        notifyDataSetChanged();
+    public void release() {
+        if (mContext != null) {
+            mContext = null;
+        }
     }
 
     @NonNull
@@ -47,13 +52,14 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
         if (roomRenting == null){
             return;
         }
-        holder.tvTitle.setText(roomRenting.getRoomTitle());
-        holder.tvPrice.setText("Giá: "+roomRenting.getRoomPrice());
-        holder.tvAddress.setText("Địa chỉ: "+roomRenting.getRoomAddress());
-        holder.tvDescription.setText("Mô tả: "+roomRenting.getRoomDescription());
-        holder.imgAvatar.setImageResource(roomRenting.getRoomImage());
+        holder.tvTitle.setText(roomRenting.getTitle());
+        holder.tvPrice.setText("Giá: " + roomRenting.getPrice()+" VNĐ/Tháng");
+        holder.tvAddress.setText("Địa chỉ: " + roomRenting.getAddress());
+        holder.tvPhone.setText("Điện thoại: " + roomRenting.getPhone());
+        holder.tvDescription.setText("Mô tả: " + roomRenting.getDescription());
+        Picasso.with(mContext).load(roomRenting.getAvatar()).into(holder.imgAvatar);
 
-        holder.layoutRoomRenting.setOnClickListener(new View.OnClickListener() {
+        holder.layoutroomRenting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mClickRoomRenting.clickRoomRenting(roomRenting);
@@ -71,9 +77,14 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
 
     public static class RoomRentingViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView imgAvatar;
-        private TextView tvTitle, tvPrice, tvAddress, tvDescription;
-        private RelativeLayout layoutRoomRenting;
+        private final ImageView imgAvatar;
+        private final TextView tvTitle;
+        private final TextView tvPrice;
+        private final TextView tvAddress;
+        private final TextView tvDescription;
+        private final TextView tvPhone;
+        private final RelativeLayout layoutroomRenting;
+
         public RoomRentingViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -82,7 +93,8 @@ public class RoomRentingAdapter extends RecyclerView.Adapter<RoomRentingAdapter.
             tvAddress = itemView.findViewById(R.id.tv_address);
             tvDescription = itemView.findViewById(R.id.tv_description);
             imgAvatar = itemView.findViewById(R.id.img_room_avatar);
-            layoutRoomRenting = itemView.findViewById(R.id.layout_room);
+            layoutroomRenting = itemView.findViewById(R.id.layout_room);
+            tvPhone = itemView.findViewById(R.id.tv_phone);
         }
     }
 }

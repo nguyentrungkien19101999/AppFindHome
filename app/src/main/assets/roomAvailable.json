@@ -1,0 +1,162 @@
+{
+  "available": [
+    {
+      "avatar": "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg",
+      "address": "Xóm Nước 2, Xã Quyết Thắng, TP Thái Nguyên",
+      "description": "Phòng đầy đủ nội thất: tủ, nóng lạnh, điều hòa. Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "1",
+      "images": [
+        {
+          "img_url": "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg"
+        },
+        {
+          "img_url": "https://nhatro.timviec365.vn/upload/tin_dang/2022/04/08/1649386676-tin-nh%C3%A0%20tr%E1%BB%8D%202.jpg"
+        },
+        {
+          "img_url": "https://media.chothue247.com/thumb_x600x400/upload/photo/cho-thue-phong-tro-moi-xay-co-gac-lung-co-ban-cong-gio-giac-tu-do-cuc-hot0.jpg"
+        }
+      ],
+      "phone": "0357845365",
+      "price": "1000000",
+      "title": "Xóm trọ bác Sơn",
+      "status": "0"
+    },
+    {
+      "avatar": "https://xaynhatro.net/wp-content/uploads/2018/05/kinh-nghiem-xay-phong-tro-dep.png",
+      "address": "Tổ 2, Phường Tân Thịnh, TP Thái Nguyên",
+      "description": "Phòng đầy đủ nội thất: tủ, nóng lạnh, điều hòa. Miễn phí wifi Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "2",
+      "images": [
+        {
+          "img_url": "https://xaynhatro.net/wp-content/uploads/2018/05/kinh-nghiem-xay-phong-tro-dep.png"
+        },
+        {
+          "img_url": "https://ancu.me/images/201904/luat-cho-thue-phong-tro-va-cac-mo-hinh-kinh-doanh-phong-tro/luat-cho-thue-phong-tro-va-cac-mo-hinh-kinh-doanh-phong-tro.jpg"
+        },
+        {
+          "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc2wu6S2owFBleWRBsOWCOjxnRUgf1NSwI1C1WjQZxEE7zlR8sKDyDkb-YFYZKw7OR3rA&usqp=CAU"
+        },
+        {
+          "img_url": "https://cdn.nhatrotot.com/images/000036646/16-5-go-dau-phuong-tan-son-nhi-quan-tan-phu-thanh-pho-ho-chi-minh-000036646001.jpg"
+        }
+      ],
+      "phone": "09548745487",
+      "price": "1500000",
+      "title": "Xóm trọ bác Thanh",
+      "status": "0"
+    },
+    {
+      "avatar": "https://timtro.vn/images/2021/08/tim-tro.jpg",
+      "address": "Xóm Nước 2, Xã Quyết Thắng, TP Thái Nguyên",
+      "description": "Phòng trống. Điện/ nước giá dân. Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "3",
+      "images": [
+        {
+          "img_url": "https://timtro.vn/images/2021/08/tim-tro.jpg"
+        },
+        {
+          "img_url": "https://www.tromoi.com/uploads/guest/o_1fcdhoib7ssq1d7u10l8mf2dotg.jpg"
+        }
+      ],
+      "phone": "0965832144",
+      "price": "500000",
+      "title": "Xóm trọ cô Thủy",
+      "status": "0"
+    },
+    {
+      "avatar": "https://alonhatro.com/assets/upload/estate/1/cho_thue_phong_tro_quan_tan_phu_co_gac_lung_vi_tri_nha_mat_tien1.jpg",
+      "address": "Xóm Cây Xanh, Xã Quyết Thắng, TP Thái Nguyên",
+      "description": "Điện 3,5k/số. Nước free. Phòng có: tủ, nóng lạnh, điều hòa. Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "4",
+      "images": [
+        {
+          "img_url": "https://alonhatro.com/assets/upload/estate/1/cho_thue_phong_tro_quan_tan_phu_co_gac_lung_vi_tri_nha_mat_tien1.jpg"
+        }
+      ],
+      "phone": "0359868836",
+      "price": "1200000",
+      "title": "Xóm trọ Tùng Thảo Nguyên",
+      "status": "0"
+    }
+  ],
+  "renting": [
+    {
+      "avatar": "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg",
+      "address": "Xóm Nước 2, Xã Quyết Thắng, TP Thái Nguyên",
+      "description": "Phòng đầy đủ nội thất: tủ, nóng lạnh, điều hòa. Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "1",
+      "images": [
+        {
+          "img_url": "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg"
+        },
+        {
+          "img_url": "https://nhatro.timviec365.vn/upload/tin_dang/2022/04/08/1649386676-tin-nh%C3%A0%20tr%E1%BB%8D%202.jpg"
+        },
+        {
+          "img_url": "https://media.chothue247.com/thumb_x600x400/upload/photo/cho-thue-phong-tro-moi-xay-co-gac-lung-co-ban-cong-gio-giac-tu-do-cuc-hot0.jpg"
+        }
+      ],
+      "phone": "0357845365",
+      "price": "1000000",
+      "title": "Xóm trọ bác Sơn",
+      "status": "1"
+    },
+    {
+      "avatar": "https://xaynhatro.net/wp-content/uploads/2018/05/kinh-nghiem-xay-phong-tro-dep.png",
+      "address": "Tổ 2, Phường Tân Thịnh, TP Thái Nguyên",
+      "description": "Phòng đầy đủ nội thất: tủ, nóng lạnh, điều hòa. Miễn phí wifi Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "2",
+      "images": [
+        {
+          "img_url": "https://xaynhatro.net/wp-content/uploads/2018/05/kinh-nghiem-xay-phong-tro-dep.png"
+        },
+        {
+          "img_url": "https://ancu.me/images/201904/luat-cho-thue-phong-tro-va-cac-mo-hinh-kinh-doanh-phong-tro/luat-cho-thue-phong-tro-va-cac-mo-hinh-kinh-doanh-phong-tro.jpg"
+        },
+        {
+          "img_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc2wu6S2owFBleWRBsOWCOjxnRUgf1NSwI1C1WjQZxEE7zlR8sKDyDkb-YFYZKw7OR3rA&usqp=CAU"
+        },
+        {
+          "img_url": "https://cdn.nhatrotot.com/images/000036646/16-5-go-dau-phuong-tan-son-nhi-quan-tan-phu-thanh-pho-ho-chi-minh-000036646001.jpg"
+        }
+      ],
+      "phone": "09548745487",
+      "price": "1500000",
+      "title": "Xóm trọ bác Thanh",
+      "status": "1"
+    },
+    {
+      "avatar": "https://timtro.vn/images/2021/08/tim-tro.jpg",
+      "address": "Xóm Nước 2, Xã Quyết Thắng, TP Thái Nguyên",
+      "description": "Phòng trống. Điện/ nước giá dân. Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "3",
+      "images": [
+        {
+          "img_url": "https://timtro.vn/images/2021/08/tim-tro.jpg"
+        },
+        {
+          "img_url": "https://www.tromoi.com/uploads/guest/o_1fcdhoib7ssq1d7u10l8mf2dotg.jpg"
+        }
+      ],
+      "phone": "0965832144",
+      "price": "500000",
+      "title": "Xóm trọ cô Thủy",
+      "status": "1"
+    },
+    {
+      "avatar": "https://alonhatro.com/assets/upload/estate/1/cho_thue_phong_tro_quan_tan_phu_co_gac_lung_vi_tri_nha_mat_tien1.jpg",
+      "address": "Xóm Cây Xanh, Xã Quyết Thắng, TP Thái Nguyên",
+      "description": "Điện 3,5k/số. Nước free. Phòng có: tủ, nóng lạnh, điều hòa. Có chỗ để xe miễn phí. Gần trường học.",
+      "idroom": "4",
+      "images": [
+        {
+          "img_url": "https://alonhatro.com/assets/upload/estate/1/cho_thue_phong_tro_quan_tan_phu_co_gac_lung_vi_tri_nha_mat_tien1.jpg"
+        }
+      ],
+      "phone": "0359868836",
+      "price": "1200000",
+      "title": "Xóm trọ Tùng Thảo Nguyên",
+      "status": "1"
+    }
+  ]
+}

@@ -8,5 +8,9 @@
     <string name="hint_address">Địa chỉ</string>
     <string name="hint_phone">Số điện thoại</string>
     <string name="hint_description">Mô tả</string>
+    <string name="msg_error_not_connect_to_internet">Please check your network connection</string>
+    <string name="tvStatus1">Phòng đang trống</string>
+    <string name="tvStatus2">Đã cho thuê</string>
+
 
 </resources>

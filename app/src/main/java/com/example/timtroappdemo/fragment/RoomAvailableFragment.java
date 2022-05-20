@@ -1,7 +1,9 @@
 package com.example.timtroappdemo.fragment;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,51 +16,141 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timtroappdemo.Constant.GlobalFuntion;
+import com.example.timtroappdemo.MyApplication;
 import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.adapter.RoomAvailableAdapter;
+import com.example.timtroappdemo.model.Photo;
 import com.example.timtroappdemo.model.RoomAvailable;
 import com.example.timtroappdemo.view.InforRoomAvailable;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoomAvailableFragment extends Fragment {
 
+    private View mView;
     private RecyclerView rcvRoomAvailable;
     private RoomAvailableAdapter roomAvailableAdapter;
+    private List<RoomAvailable> mListRoom;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_roomavailable, container, false);
+        mView = inflater.inflate(R.layout.fragment_roomavailable, container, false);
 
-        rcvRoomAvailable = view.findViewById(R.id.rcv_roomavailable);
+        initView();
+        getListRoom();
+
+        return mView;
+    }
+
+    private void initView() {
+        if (mView == null) {
+            return;
+        }
+        rcvRoomAvailable = mView.findViewById(R.id.rcv_roomavailable);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rcvRoomAvailable.setLayoutManager(linearLayoutManager);
 
-        roomAvailableAdapter = new RoomAvailableAdapter(getListRoom(), new RoomAvailableAdapter.IClickRoomAvailable() {
+        mListRoom = new ArrayList<>();
+        roomAvailableAdapter = new RoomAvailableAdapter(getActivity(), mListRoom, new RoomAvailableAdapter.IClickRoomAvailable() {
             @Override
             public void clickRoomAvailable(RoomAvailable roomAvailable) {
-                Intent intent = new Intent(getContext(), InforRoomAvailable.class);
-                startActivity(intent);
-//                Toast.makeText(getContext(),"Is Click Item Room " + roomAvailable.getRoomTitle(),Toast.LENGTH_SHORT).show();
+                goToRoomDetail(roomAvailable);
             }
         });
 
-        roomAvailableAdapter.setData(getListRoom());
         rcvRoomAvailable.setAdapter(roomAvailableAdapter);
-
-        return view;
     }
 
-    private List<RoomAvailable> getListRoom() {
-        List<RoomAvailable> list = new ArrayList<>();
-        list.add(new RoomAvailable(R.drawable.room1, 01,"Xóm trọ cô Thủy", "2000000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên, Thai Nguyen", "0358387888","Phòng 20m2, điều hòa điện nước đầy đủ"));
-        list.add(new RoomAvailable(R.drawable.room2, 02,"Xóm trọ cô Thu", "1500000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên", "0165878785","Phòng 20m2, điều hòa điện nước đầy đủ"));
-        list.add(new RoomAvailable(R.drawable.room1, 03,"Xóm trọ cô Thanh", "1000000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên, Thai Nguyen", "0358987457","Phòng 20m2, điều hòa điện nước đầy đủ, giuong tu quan ao, may giat"));
-        list.add(new RoomAvailable(R.drawable.room2, 04,"Xóm trọ chú Hùng", "500000 VNĐ", "Xóm Nước 2, xã Quyết Thắng, TP Thái Nguyên", "098574745","Phòng 20m2, điều hòa điện nước đầy đủ"));
+    private void goToRoomDetail(RoomAvailable roomAvailable) {
+        ArrayList<Photo> listImageDisplay = (ArrayList<Photo>) roomAvailable.getImages();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("imageRoom", listImageDisplay);
+        bundle.putString("idRoom", roomAvailable.getIdroom());
+        bundle.putString("titleRoom", roomAvailable.getTitle());
+        bundle.putString("priceRoom", roomAvailable.getPrice());
+        bundle.putString("phoneRoom", roomAvailable.getPhone());
+        bundle.putString("addressRoom", roomAvailable.getAddress());
+        bundle.putString("descriptionRoom", roomAvailable.getDescription());
+        bundle.putString("statusRoom", roomAvailable.getStatus());
+        bundle.putString("avatarRoom", roomAvailable.getAvatar());
+        bundle.putString("idFragment", "available");
 
-        return list;
+        GlobalFuntion.startActivity(getActivity(), InforRoomAvailable.class, bundle);
     }
+
+    private void getListRoom() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        MyApplication.get(getActivity()).getRoomAvailable().addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                RoomAvailable roomAvailable = snapshot.getValue(RoomAvailable.class);
+                if (roomAvailable == null || mListRoom == null || roomAvailableAdapter == null) {
+                    return;
+                }
+                mListRoom.add(0, roomAvailable);
+                roomAvailableAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                RoomAvailable roomAvailable = snapshot.getValue(RoomAvailable.class);
+                if (roomAvailable == null || mListRoom == null || roomAvailableAdapter == null) {
+                    return;
+                }
+                for (int i = 0; i < mListRoom.size(); i++) {
+                    if (roomAvailable.getIdroom().equalsIgnoreCase(mListRoom.get(i).getIdroom())) {
+                        mListRoom.set(i, roomAvailable);
+                        break;
+                    }
+                }
+                roomAvailableAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                RoomAvailable roomAvailable = snapshot.getValue(RoomAvailable.class);
+                if (roomAvailable == null || mListRoom == null || roomAvailableAdapter == null) {
+                    return;
+                }
+                for (RoomAvailable roomDelete : mListRoom) {
+                    if (roomAvailable.getIdroom().equalsIgnoreCase(roomDelete.getIdroom())) {
+                        mListRoom.remove(roomDelete);
+                        break;
+                    }
+                }
+                roomAvailableAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), R.string.msg_error_not_connect_to_internet, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (roomAvailableAdapter != null) {
+            roomAvailableAdapter.release();
+        }
+    }
+
+
 }

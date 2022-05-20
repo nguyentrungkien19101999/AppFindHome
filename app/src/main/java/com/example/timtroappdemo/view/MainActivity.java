@@ -1,4 +1,4 @@
-package com.example.timtroappdemo;
+package com.example.timtroappdemo.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.adapter.MyViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;

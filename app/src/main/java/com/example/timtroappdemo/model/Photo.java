@@ -1,19 +1,23 @@
 package com.example.timtroappdemo.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Photo implements Serializable {
-    private int resourceId;
+    private String img_url;
 
-    public Photo(int resourceId) {
-        this.resourceId = resourceId;
+    public Photo() {
     }
 
-    public int getResourceId() {
-        return resourceId;
+    public Photo(String img_url) {
+        this.img_url = img_url;
     }
 
-    public void setResourceId(int resourceId) {
-        this.resourceId = resourceId;
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
     }
 }

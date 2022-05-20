@@ -1,77 +1,92 @@
 package com.example.timtroappdemo.model;
 
+import android.media.Image;
+
+import java.util.List;
+
 public class RoomAvailable {
-    private int roomImage;
-    private int roomId;
-    private String roomTitle;
-    private String roomPrice;
-    private String roomAddress;
-    private String roomPhone;
-    private String roomDescription;
+    private String avatar;
+    private String idroom;
+    private String title;
+    private String price;
+    private String address;
+    private String phone;
+    private String description;
+    private String status;
+    private List<Photo> images;
 
-    public RoomAvailable(int roomImage, int roomId, String roomTitle, String roomPrice, String roomAddress, String roomPhone, String roomDescription) {
-        this.roomImage = roomImage;
-        this.roomId = roomId;
-        this.roomTitle = roomTitle;
-        this.roomPrice = roomPrice;
-        this.roomAddress = roomAddress;
-        this.roomPhone = roomPhone;
-        this.roomDescription = roomDescription;
+    public RoomAvailable() {
     }
 
-    public String getRoomTitle() {
-        return roomTitle;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setRoomTitle(String roomTitle) {
-        this.roomTitle = roomTitle;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public String getRoomPrice() {
-        return roomPrice;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRoomPrice(String roomPrice) {
-        this.roomPrice = roomPrice;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getRoomAddress() {
-        return roomAddress;
+    public String getIdroom() {
+        return idroom;
     }
 
-    public void setRoomAddress(String roomAddress) {
-        this.roomAddress = roomAddress;
+    public void setIdroom(String idroom) {
+        this.idroom = idroom;
     }
 
-    public String getRoomDescription() {
-        return roomDescription;
+    public String getPrice() {
+        return price;
     }
 
-    public void setRoomDescription(String roomDescription) {
-        this.roomDescription = roomDescription;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public int getRoomImage() {
-        return roomImage;
+    public String getAddress() {
+        return address;
     }
 
-    public void setRoomImage(int roomImage) {
-        this.roomImage = roomImage;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getRoomPhone() {
-        return roomPhone;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRoomPhone(String roomPhone) {
-        this.roomPhone = roomPhone;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Photo> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Photo> images) {
+        this.images = images;
     }
 }

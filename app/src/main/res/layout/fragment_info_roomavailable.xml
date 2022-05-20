@@ -13,7 +13,7 @@
 
         <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:id="@+id/view_pager2"/>
 
         <me.relex.circleindicator.CircleIndicator3
@@ -24,62 +24,78 @@
             app:ci_drawable="@drawable/bg_indicator"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_title"
-        android:layout_below="@+id/ll_view"
-        android:padding="5dp"
-        android:text="Title"
-        android:textSize="20sp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_view">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_price"
-        android:layout_below="@+id/tv_title"
-        android:padding="5dp"
-        android:text="Title"
-        android:textSize="16sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_address"
-        android:layout_below="@+id/tv_price"
-        android:padding="5dp"
-        android:text="Title"
-        android:textSize="16sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_phone"
-        android:layout_below="@+id/tv_address"
-        android:padding="5dp"
-        android:text="Title"
-        android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_description"
-        android:layout_below="@+id/tv_phone"
-        android:padding="5dp"
-        android:text="Title"
-        android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_id"
+                android:text="Title"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_title"
+                android:text="Title"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_status"
-        android:layout_below="@+id/tv_description"
-        android:padding="5dp"
-        android:text="Title"
-        android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_price"
+                android:padding="5dp"
+                android:text="Title"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_address"
+                android:padding="5dp"
+                android:text="Title"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_phone"
+                android:padding="5dp"
+                android:text="Title"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_description"
+                android:padding="5dp"
+                android:text="Title"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_status"
+                android:padding="5dp"
+                android:text="Title"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+    </ScrollView>
 
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:id="@+id/btn_edit"
+        android:id="@+id/img_edit"
         android:src="@drawable/btn_edit"
         android:layout_alignParentBottom="true"
         android:padding="10dp"
@@ -88,7 +104,7 @@
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:id="@+id/btn_delete"
+        android:id="@+id/img_delete"
         android:src="@drawable/btn_delete"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

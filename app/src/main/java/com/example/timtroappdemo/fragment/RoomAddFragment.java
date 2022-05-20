@@ -1,13 +1,16 @@
 package com.example.timtroappdemo.fragment;
 
 import android.Manifest;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,49 +19,90 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timtroappdemo.Constant.GlobalFuntion;
+import com.example.timtroappdemo.MyApplication;
 import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.adapter.PhotoAddAdapter;
+import com.example.timtroappdemo.model.Photo;
+import com.example.timtroappdemo.model.RoomAvailable;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class RoomAddFragment extends Fragment {
-    private Button btnSelectPhoto;
+    private Button btnSelectPhoto, btnSubmit;
     private RecyclerView rcvPhoto;
     private PhotoAddAdapter mPhotoAddAdapter;
+    private TextInputEditText edtTitle, edtPrice, edtAddress, edtPhone, edtDescription;
+    private View mView;
+    private List<Photo> uriListPhoto;
+    private ImageView imgAvatar;
+    private String imageFileAvatar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_roomadd, container, false);
+        mView = inflater.inflate(R.layout.fragment_roomadd, container, false);
 
-        btnSelectPhoto = view.findViewById(R.id.btn_selectPhoto);
-        rcvPhoto = view.findViewById(R.id.rcv_photo);
+        initView();
+
+        return mView;
+    }
+
+    private void initView() {
+        btnSelectPhoto = mView.findViewById(R.id.btn_selectPhoto);
+        rcvPhoto = mView.findViewById(R.id.rcv_photo);
+        edtTitle = mView.findViewById(R.id.textInput_title);
+        edtPrice = mView.findViewById(R.id.textInput_price);
+        edtAddress = mView.findViewById(R.id.textInput_address);
+        edtPhone = mView.findViewById(R.id.textInput_phone);
+        edtDescription = mView.findViewById(R.id.textInput_desciption);
+        btnSubmit = mView.findViewById(R.id.btn_submid);
+        imgAvatar = mView.findViewById(R.id.img_add_avatar);
+
+        uriListPhoto = new ArrayList<>();
         mPhotoAddAdapter = new PhotoAddAdapter(getContext());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         rcvPhoto.setLayoutManager(gridLayoutManager);
         rcvPhoto.setAdapter(mPhotoAddAdapter);
 
         btnSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectPhotoGallery();
+            }
+        });
+
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 requestPermission();
             }
         });
 
-        return view;
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRoom();
+            }
+        });
     }
 
-    private void requestPermission(){
+    private void requestPermission() {
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                selectPhotoGallery();
+                selectPhotoAvatar();
             }
 
             @Override
@@ -73,20 +117,93 @@ public class RoomAddFragment extends Fragment {
                 .check();
     }
 
-    private void selectPhotoGallery(){
+    private void selectPhotoGallery() {
+        uriListPhoto.clear();
         TedBottomPicker.with(getActivity())
                 .setPeekHeight(1600)
                 .showTitle(false)
-                .setCompleteButtonText("Done")
-                .setEmptySelectionText("No Select")
+                .setCompleteButtonText("Xong")
+                .setEmptySelectionText("Không chọn")
                 .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
                     @Override
                     public void onImagesSelected(List<Uri> uriList) {
-                        if (uriList != null && !uriList.isEmpty()){
+                        if (uriList != null && !uriList.isEmpty()) {
                             mPhotoAddAdapter.setData(uriList);
+                            for (int i = 0 ; i<uriList.size() ; i++){
+                                Photo photo = new Photo(uriList.get(i).toString());
+                                uriListPhoto.add(photo);
+                            }
                             btnSelectPhoto.setText("Thay đổi ảnh mô tả");
                         }
                     }
                 });
+    }
+
+    private void selectPhotoAvatar(){
+        TedBottomPicker.with(getActivity())
+                .show(new TedBottomSheetDialogFragment.OnImageSelectedListener() {
+                    @Override
+                    public void onImageSelected(Uri uri) {
+                       imgAvatar.setImageURI(uri);
+                       imageFileAvatar = uri.toString().trim();
+                    }
+                });
+    }
+
+    private void addRoom(){
+        String strTitle = edtTitle.getText().toString().trim();
+        String strPrice = edtPrice.getText().toString().trim();
+        String strAddress = edtAddress.getText().toString().trim();
+        String strPhone = edtPhone.getText().toString().trim();
+        String strDescription = edtDescription.getText().toString().trim();
+
+        if (strTitle.isEmpty()){
+            Toast.makeText(getActivity(), "Vui lòng nhập Tiêu đề!", Toast.LENGTH_SHORT).show();
+        } else if (strPrice.isEmpty()){
+            Toast.makeText(getActivity(), "Vui lòng nhập Giá phòng!", Toast.LENGTH_SHORT).show();
+        } else if (strAddress.isEmpty()){
+            Toast.makeText(getActivity(), "Vui lòng nhập Địa chỉ!", Toast.LENGTH_SHORT).show();
+        } else if (strPhone.isEmpty()){
+            Toast.makeText(getActivity(), "Vui lòng nhập Số điện thoại!", Toast.LENGTH_SHORT).show();
+        } else if (strDescription.isEmpty()){
+            Toast.makeText(getActivity(), "Vui lòng nhập Mô tả!", Toast.LENGTH_SHORT).show();
+        } else {
+
+            long categoryId = GlobalFuntion.getId();
+            RoomAvailable roomAvailable = new RoomAvailable();
+            roomAvailable.setTitle(strTitle);
+            roomAvailable.setPrice(strPrice);
+            roomAvailable.setAddress(strAddress);
+            roomAvailable.setPhone(strPhone);
+            roomAvailable.setDescription(strDescription);
+            roomAvailable.setStatus("0");
+            roomAvailable.setAvatar(imageFileAvatar);
+            roomAvailable.setIdroom(String.valueOf(categoryId));
+            roomAvailable.setImages(uriListPhoto);
+
+
+            MyApplication.get(getActivity()).getRoomAvailable().child(String.valueOf(categoryId)).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(getActivity(),
+                            "Thêm phòng thành công!", Toast.LENGTH_LONG).show();
+                    GlobalFuntion.hideSoftKeyboard(getActivity());
+                    refresh();
+                }
+            });
+
+        }
+    }
+
+    private void refresh(){
+        edtTitle.setText(null);
+        edtPrice.setText(null);
+        edtAddress.setText(null);
+        edtPhone.setText(null);
+        edtDescription.setText(null);
+        imgAvatar.setImageResource(R.drawable.image_add_avatar);
+        rcvPhoto.setAdapter(null);
+        btnSelectPhoto.setText("Thêm ảnh mô tả phòng");
+        uriListPhoto.clear();
     }
 }
