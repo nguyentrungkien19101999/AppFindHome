@@ -1,11 +1,15 @@
 package com.example.timtroappdemo.view;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -22,6 +26,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -45,10 +51,11 @@ import me.relex.circleindicator.CircleIndicator3;
 
 public class InforRoomAvailable extends AppCompatActivity {
 
+    private static final int REQUEST_CALL = 1;
     private ViewPager2 mViewPager2;
     private CircleIndicator3 mCircleIndicator3;
     private PhotoAdapter photoAdapter;
-    private ImageView imgEdit, imgDelete;
+    private ImageView imgEdit, imgDelete, imgCall;
     private ArrayList<Photo> imageRoom;
     private String strPrice, strAddress, strPhone, strDescription, strStatus, strTitle, strId, strAvatar, strIdFragment;
     private TextView tvId, tvTitle, tvPrice, tvAddress, tvPhone, tvDescription, tvStatus;
@@ -74,10 +81,16 @@ public class InforRoomAvailable extends AppCompatActivity {
         tvId = findViewById(R.id.tv_id);
         imgDelete = findViewById(R.id.img_delete);
         imgEdit = findViewById(R.id.img_edit);
+        imgCall = findViewById(R.id.img_call);
 
         imageRoom = (ArrayList<Photo>) bundle.getSerializable("imageRoom");
 
         strIdFragment = bundle.getString("idFragment");
+        if (strIdFragment.equalsIgnoreCase("available") || strIdFragment.equalsIgnoreCase("renting")){
+            imgEdit.setVisibility(View.VISIBLE);
+            imgDelete.setVisibility(View.VISIBLE);
+            imgCall.setVisibility(View.GONE);
+        }
 
         strId = bundle.getString("idRoom");
         tvId.setText("#"+strId);
@@ -124,6 +137,13 @@ public class InforRoomAvailable extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onClickEditRoom();
+            }
+        });
+
+        imgCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickCall();
             }
         });
     }
@@ -312,4 +332,15 @@ public class InforRoomAvailable extends AppCompatActivity {
 
         dialog.show();
     }
+
+    private void onClickCall(){
+        String numberPhone = "tel:" + tvPhone.getText().toString().trim();
+        Log.d("+++","+++"+Uri.parse(numberPhone));
+
+            Intent callIntent =new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse(numberPhone));
+            startActivity(callIntent);
+
+    }
+
 }
