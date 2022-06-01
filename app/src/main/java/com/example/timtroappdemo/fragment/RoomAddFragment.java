@@ -193,76 +193,81 @@ public class RoomAddFragment extends Fragment {
                     Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else {
+            Toast.makeText(getActivity(), "Bạn chưa chọn ảnh đại diện cho phòng", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void uploadListImage(long categoryId) {
-        if (uriListImageUpload != null) {
-
-            // Code for showing progressDialog while uploading
-            ProgressDialog progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Đang tải ảnh lên...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-
-            // Defining the child of storageReference
-            for (int i = 0; i < uriListImageUpload.size(); i++) {
-                Uri IndividualImage = uriListImageUpload.get(i);
-                StorageReference ref = storageReference.child(categoryId + "/" + "imageRoom" + (i+1));
-
-                int ii = i;
-                // adding listeners on upload
-                // or failure of image
-                ref.putFile(IndividualImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Photo photo = new Photo(uri.toString());
-                                uriListImageDownload.add(photo);
-                                Log.d("+++", "+++" + uriListImageDownload);
-
-                            }
-                        });
-                        // Image uploaded successfully
-                        // Dismiss dialog
-
-                        if (ii == (uriListImageUpload.size() - 1)) {
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressDialog.dismiss();
-                                    addRoom(categoryId);
-                                }
-                            }, 3000);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    private void addRoom(long categoryId) {
         String strTitle = edtTitle.getText().toString().trim();
         String strPrice = edtPrice.getText().toString().trim();
         String strAddress = edtAddress.getText().toString().trim();
         String strPhone = edtPhone.getText().toString().trim();
         String strDescription = edtDescription.getText().toString().trim();
+        Log.d("+++","+++"+uriListImageUpload);
+        if (uriListImageUpload.size() != 0) {
+            if (strTitle.isEmpty()) {
+                Toast.makeText(getActivity(), "Vui lòng nhập Tiêu đề!", Toast.LENGTH_SHORT).show();
+            } else if (strPrice.isEmpty()) {
+                Toast.makeText(getActivity(), "Vui lòng nhập Giá phòng!", Toast.LENGTH_SHORT).show();
+            } else if (strAddress.isEmpty()) {
+                Toast.makeText(getActivity(), "Vui lòng nhập Địa chỉ!", Toast.LENGTH_SHORT).show();
+            } else if (strPhone.isEmpty()) {
+                Toast.makeText(getActivity(), "Vui lòng nhập Số điện thoại!", Toast.LENGTH_SHORT).show();
+            } else if (strDescription.isEmpty()) {
+                Toast.makeText(getActivity(), "Vui lòng nhập Mô tả!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Code for showing progressDialog while uploading
+                ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("Đang tải ảnh lên...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
-        if (strTitle.isEmpty()) {
-            Toast.makeText(getActivity(), "Vui lòng nhập Tiêu đề!", Toast.LENGTH_SHORT).show();
-        } else if (strPrice.isEmpty()) {
-            Toast.makeText(getActivity(), "Vui lòng nhập Giá phòng!", Toast.LENGTH_SHORT).show();
-        } else if (strAddress.isEmpty()) {
-            Toast.makeText(getActivity(), "Vui lòng nhập Địa chỉ!", Toast.LENGTH_SHORT).show();
-        } else if (strPhone.isEmpty()) {
-            Toast.makeText(getActivity(), "Vui lòng nhập Số điện thoại!", Toast.LENGTH_SHORT).show();
-        } else if (strDescription.isEmpty()) {
-            Toast.makeText(getActivity(), "Vui lòng nhập Mô tả!", Toast.LENGTH_SHORT).show();
+                // Defining the child of storageReference
+                for (int i = 0; i < uriListImageUpload.size(); i++) {
+                    Uri IndividualImage = uriListImageUpload.get(i);
+                    StorageReference ref = storageReference.child(categoryId + "/" + "imageRoom" + (i+1));
+
+                    int ii = i;
+                    // adding listeners on upload
+                    // or failure of image
+                    ref.putFile(IndividualImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Photo photo = new Photo(uri.toString());
+                                    uriListImageDownload.add(photo);
+                                    Log.d("+++", "+++" + uriListImageDownload);
+
+                                }
+                            });
+                            // Image uploaded successfully
+                            // Dismiss dialog
+
+                            if (ii == (uriListImageUpload.size() - 1)) {
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.dismiss();
+                                        addRoom(categoryId, strTitle, strPrice,
+                                                strAddress, strPhone, strDescription);
+                                    }
+                                }, 3000);
+                            }
+                        }
+                    });
+                }
+            }
         } else {
+            Toast.makeText(getActivity(), "Bạn chưa chọn ảnh mô tả cho phòng", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void addRoom(long categoryId , String strTitle, String strPrice, String strAddress,
+                         String strPhone, String strDescription) {
             RoomAvailable roomAvailable = new RoomAvailable();
             roomAvailable.setTitle(strTitle);
             roomAvailable.setPrice(strPrice);
@@ -283,7 +288,6 @@ public class RoomAddFragment extends Fragment {
                     refresh();
                 }
             });
-        }
     }
 
     private void refresh() {
