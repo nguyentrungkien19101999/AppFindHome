@@ -12,8 +12,7 @@ public class Constant {
     public static final String KEY_HISTORY_LISTQUEST = "KEY_HISTORY_LISTQUEST";
     public static final int POS_SELECTED_INVALID = -1;
 
-    public static final String STATUS_TODO = "To do";
-    public static final String STATUS_DOING = "Doing";
-    public static final String STATUS_COMPLETED = "Completed";
+    public static final String UPLOADAVATAR_COMPLETED = "Upload Room Avatar Completed";
+    public static final String UPLOADIMAGE_COMPLETED = "Upload Room List Image Completed";
 
 }

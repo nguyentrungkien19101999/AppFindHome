@@ -11,7 +11,7 @@
             android:id="@+id/tv_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="50dp"
             android:text="Ảnh đại diện: "
             android:textColor="@color/black"
@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/img_add_avatar"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
             android:layout_toRightOf="@+id/tv_avatar"
             android:layout_marginTop="5dp"
             android:src="@drawable/image_add_avatar"

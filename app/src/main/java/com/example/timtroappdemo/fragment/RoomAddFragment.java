@@ -1,10 +1,11 @@
 package com.example.timtroappdemo.fragment;
 
 import android.Manifest;
-import android.graphics.Bitmap;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +26,17 @@ import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.adapter.PhotoAddAdapter;
 import com.example.timtroappdemo.model.Photo;
 import com.example.timtroappdemo.model.RoomAvailable;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +49,16 @@ public class RoomAddFragment extends Fragment {
     private PhotoAddAdapter mPhotoAddAdapter;
     private TextInputEditText edtTitle, edtPrice, edtAddress, edtPhone, edtDescription;
     private View mView;
-    private List<Photo> uriListPhoto;
     private ImageView imgAvatar;
+
     private String imageFileAvatar;
+    private String imageAvatar;
+
+    private List<Uri> uriListImageUpload;
+    private List<Photo> uriListImageDownload;
+
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
 
     @Nullable
     @Override
@@ -69,8 +81,13 @@ public class RoomAddFragment extends Fragment {
         btnSubmit = mView.findViewById(R.id.btn_submid);
         imgAvatar = mView.findViewById(R.id.img_add_avatar);
 
-        uriListPhoto = new ArrayList<>();
+        uriListImageUpload = new ArrayList<>();
+        uriListImageDownload = new ArrayList<>();
+
         mPhotoAddAdapter = new PhotoAddAdapter(getContext());
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         rcvPhoto.setLayoutManager(gridLayoutManager);
@@ -93,7 +110,9 @@ public class RoomAddFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRoom();
+                long categoryId = GlobalFuntion.getId();
+                uploadImage(categoryId);
+                uploadListImage(categoryId);
             }
         });
     }
@@ -118,7 +137,7 @@ public class RoomAddFragment extends Fragment {
     }
 
     private void selectPhotoGallery() {
-        uriListPhoto.clear();
+        uriListImageUpload.clear();
         TedBottomPicker.with(getActivity())
                 .setPeekHeight(1600)
                 .showTitle(false)
@@ -129,9 +148,8 @@ public class RoomAddFragment extends Fragment {
                     public void onImagesSelected(List<Uri> uriList) {
                         if (uriList != null && !uriList.isEmpty()) {
                             mPhotoAddAdapter.setData(uriList);
-                            for (int i = 0 ; i<uriList.size() ; i++){
-                                Photo photo = new Photo(uriList.get(i).toString());
-                                uriListPhoto.add(photo);
+                            for (int i = 0; i < uriList.size(); i++) {
+                                uriListImageUpload.add(uriList.get(i));
                             }
                             btnSelectPhoto.setText("Thay đổi ảnh mô tả");
                         }
@@ -139,37 +157,112 @@ public class RoomAddFragment extends Fragment {
                 });
     }
 
-    private void selectPhotoAvatar(){
+    private void selectPhotoAvatar() {
         TedBottomPicker.with(getActivity())
                 .show(new TedBottomSheetDialogFragment.OnImageSelectedListener() {
                     @Override
                     public void onImageSelected(Uri uri) {
-                       imgAvatar.setImageURI(uri);
-                       imageFileAvatar = uri.toString().trim();
+                        imgAvatar.setImageURI(uri);
+                        imageFileAvatar = uri.toString().trim();
                     }
                 });
     }
 
-    private void addRoom(){
+    private void uploadImage(long categoryId) {
+        if (imageFileAvatar != null) {
+
+            // Defining the child of storageReference
+            StorageReference ref = storageReference.child(categoryId + "/" + "imageRoom0");
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(Uri.parse(imageFileAvatar)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            imageAvatar = String.valueOf(uri);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Error, Image not uploaded
+                    Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void uploadListImage(long categoryId) {
+        if (uriListImageUpload != null) {
+
+            // Code for showing progressDialog while uploading
+            ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Đang tải ảnh lên...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            // Defining the child of storageReference
+            for (int i = 0; i < uriListImageUpload.size(); i++) {
+                Uri IndividualImage = uriListImageUpload.get(i);
+                StorageReference ref = storageReference.child(categoryId + "/" + "imageRoom" + (i+1));
+
+                int ii = i;
+                // adding listeners on upload
+                // or failure of image
+                ref.putFile(IndividualImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Photo photo = new Photo(uri.toString());
+                                uriListImageDownload.add(photo);
+                                Log.d("+++", "+++" + uriListImageDownload);
+
+                            }
+                        });
+                        // Image uploaded successfully
+                        // Dismiss dialog
+
+                        if (ii == (uriListImageUpload.size() - 1)) {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    addRoom(categoryId);
+                                }
+                            }, 3000);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private void addRoom(long categoryId) {
         String strTitle = edtTitle.getText().toString().trim();
         String strPrice = edtPrice.getText().toString().trim();
         String strAddress = edtAddress.getText().toString().trim();
         String strPhone = edtPhone.getText().toString().trim();
         String strDescription = edtDescription.getText().toString().trim();
 
-        if (strTitle.isEmpty()){
+        if (strTitle.isEmpty()) {
             Toast.makeText(getActivity(), "Vui lòng nhập Tiêu đề!", Toast.LENGTH_SHORT).show();
-        } else if (strPrice.isEmpty()){
+        } else if (strPrice.isEmpty()) {
             Toast.makeText(getActivity(), "Vui lòng nhập Giá phòng!", Toast.LENGTH_SHORT).show();
-        } else if (strAddress.isEmpty()){
+        } else if (strAddress.isEmpty()) {
             Toast.makeText(getActivity(), "Vui lòng nhập Địa chỉ!", Toast.LENGTH_SHORT).show();
-        } else if (strPhone.isEmpty()){
+        } else if (strPhone.isEmpty()) {
             Toast.makeText(getActivity(), "Vui lòng nhập Số điện thoại!", Toast.LENGTH_SHORT).show();
-        } else if (strDescription.isEmpty()){
+        } else if (strDescription.isEmpty()) {
             Toast.makeText(getActivity(), "Vui lòng nhập Mô tả!", Toast.LENGTH_SHORT).show();
         } else {
 
-            long categoryId = GlobalFuntion.getId();
             RoomAvailable roomAvailable = new RoomAvailable();
             roomAvailable.setTitle(strTitle);
             roomAvailable.setPrice(strPrice);
@@ -177,10 +270,9 @@ public class RoomAddFragment extends Fragment {
             roomAvailable.setPhone(strPhone);
             roomAvailable.setDescription(strDescription);
             roomAvailable.setStatus("0");
-            roomAvailable.setAvatar(imageFileAvatar);
+            roomAvailable.setAvatar(imageAvatar);
             roomAvailable.setIdroom(String.valueOf(categoryId));
-            roomAvailable.setImages(uriListPhoto);
-
+            roomAvailable.setImages(uriListImageDownload);
 
             MyApplication.get(getActivity()).getRoomAvailable().child(String.valueOf(categoryId)).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
                 @Override
@@ -191,11 +283,10 @@ public class RoomAddFragment extends Fragment {
                     refresh();
                 }
             });
-
         }
     }
 
-    private void refresh(){
+    private void refresh() {
         edtTitle.setText(null);
         edtPrice.setText(null);
         edtAddress.setText(null);
@@ -204,6 +295,8 @@ public class RoomAddFragment extends Fragment {
         imgAvatar.setImageResource(R.drawable.image_add_avatar);
         rcvPhoto.setAdapter(null);
         btnSelectPhoto.setText("Thêm ảnh mô tả phòng");
-        uriListPhoto.clear();
+        uriListImageUpload.clear();
+        uriListImageDownload.clear();
+
     }
 }

@@ -18,11 +18,7 @@
         android:theme="@style/Theme.TimTroAppDemo">
         <activity android:name=".view.InforRoomAvailable"/>
         <activity android:name=".view.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".view.RegisterActivity"/>
         <activity android:name=".view.LogInActivity">
@@ -30,7 +26,11 @@
         <activity android:name=".view.RoomUserActivity">
         </activity>
         <activity android:name=".view.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

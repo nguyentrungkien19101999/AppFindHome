@@ -38,11 +38,15 @@ import com.example.timtroappdemo.R;
 import com.example.timtroappdemo.adapter.PhotoAdapter;
 import com.example.timtroappdemo.model.Photo;
 import com.example.timtroappdemo.model.RoomAvailable;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,13 +64,15 @@ public class InforRoomAvailable extends AppCompatActivity {
     private String strPrice, strAddress, strPhone, strDescription, strStatus, strTitle, strId, strAvatar, strIdFragment;
     private TextView tvId, tvTitle, tvPrice, tvAddress, tvPhone, tvDescription, tvStatus;
 
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_info_roomavailable);
 
         initData(getIntent().getExtras());
-
     }
 
     private void initData(Bundle bundle) {
@@ -83,17 +89,20 @@ public class InforRoomAvailable extends AppCompatActivity {
         imgEdit = findViewById(R.id.img_edit);
         imgCall = findViewById(R.id.img_call);
 
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
         imageRoom = (ArrayList<Photo>) bundle.getSerializable("imageRoom");
 
         strIdFragment = bundle.getString("idFragment");
-        if (strIdFragment.equalsIgnoreCase("available") || strIdFragment.equalsIgnoreCase("renting")){
+        if (strIdFragment.equalsIgnoreCase("available") || strIdFragment.equalsIgnoreCase("renting")) {
             imgEdit.setVisibility(View.VISIBLE);
             imgDelete.setVisibility(View.VISIBLE);
             imgCall.setVisibility(View.GONE);
         }
 
         strId = bundle.getString("idRoom");
-        tvId.setText("#"+strId);
+        tvId.setText("#" + strId);
 
         strTitle = bundle.getString("titleRoom");
         tvTitle.setText(strTitle);
@@ -103,19 +112,19 @@ public class InforRoomAvailable extends AppCompatActivity {
         }
 
         strPrice = bundle.getString("priceRoom");
-        tvPrice.setText("Giá phòng: "+strPrice+" VNĐ/Tháng");
+        tvPrice.setText("Giá phòng: " + strPrice + " VNĐ/Tháng");
 
         strAddress = bundle.getString("addressRoom");
-        tvAddress.setText("Địa chỉ: "+strAddress);
+        tvAddress.setText("Địa chỉ: " + strAddress);
 
         strPhone = bundle.getString("phoneRoom");
-        tvPhone.setText("Điện thoại: "+strPhone);
+        tvPhone.setText("Điện thoại: " + strPhone);
 
         strDescription = bundle.getString("descriptionRoom");
-        tvDescription.setText("Mô tả: "+strDescription);
+        tvDescription.setText("Mô tả: " + strDescription);
 
         strStatus = bundle.getString("statusRoom");
-        if (strStatus.equalsIgnoreCase("0")){
+        if (strStatus.equalsIgnoreCase("0")) {
             tvStatus.setText("Tình trạng: Phòng đang trống");
         } else tvStatus.setText("Tình trạng: Đã cho thuê");
 
@@ -155,7 +164,17 @@ public class InforRoomAvailable extends AppCompatActivity {
                 .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(strIdFragment.equalsIgnoreCase("available")){
+                        for (int ii = 0; ii <= imageRoom.size(); ii++) {
+                            // Defining the child of storageReference
+                            StorageReference ref = storageReference.child(strId + "/imageRoom" + ii);
+                            ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+                        }
+
+                        if (strIdFragment.equalsIgnoreCase("available")) {
                             MyApplication.get(getApplication()).getRoomAvailable().child(strId).removeValue(new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -180,7 +199,7 @@ public class InforRoomAvailable extends AppCompatActivity {
                 .show();
     }
 
-    private void onClickEditRoom(){
+    private void onClickEditRoom() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_edit_room);
@@ -199,7 +218,7 @@ public class InforRoomAvailable extends AppCompatActivity {
         RadioButton cbRoomAvailable = dialog.findViewById(R.id.rb_Status1);
         RadioButton cbRoomRenting = dialog.findViewById(R.id.rb_Status2);
 
-        if (strStatus.equalsIgnoreCase("0")){
+        if (strStatus.equalsIgnoreCase("0")) {
             cbRoomAvailable.setChecked(true);
         } else cbRoomRenting.setChecked(true);
 
@@ -212,21 +231,21 @@ public class InforRoomAvailable extends AppCompatActivity {
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 strTitle = edtTitle.getText().toString().trim();
-                 strPrice = edtPrice.getText().toString().trim();
-                 strAddress = edtAddress.getText().toString().trim();
-                 strPhone = edtPhone.getText().toString().trim();
-                 strDescription = edtDescription.getText().toString().trim();
+                strTitle = edtTitle.getText().toString().trim();
+                strPrice = edtPrice.getText().toString().trim();
+                strAddress = edtAddress.getText().toString().trim();
+                strPhone = edtPhone.getText().toString().trim();
+                strDescription = edtDescription.getText().toString().trim();
 
-                if (strTitle.isEmpty()){
+                if (strTitle.isEmpty()) {
                     Toast.makeText(getApplication(), "Vui lòng nhập Tiêu đề!", Toast.LENGTH_SHORT).show();
-                } else if (strPrice.isEmpty()){
+                } else if (strPrice.isEmpty()) {
                     Toast.makeText(getApplication(), "Vui lòng nhập Giá phòng!", Toast.LENGTH_SHORT).show();
-                } else if (strAddress.isEmpty()){
+                } else if (strAddress.isEmpty()) {
                     Toast.makeText(getApplication(), "Vui lòng nhập Địa chỉ!", Toast.LENGTH_SHORT).show();
-                } else if (strPhone.isEmpty()){
+                } else if (strPhone.isEmpty()) {
                     Toast.makeText(getApplication(), "Vui lòng nhập Số điện thoại!", Toast.LENGTH_SHORT).show();
-                } else if (strDescription.isEmpty()){
+                } else if (strDescription.isEmpty()) {
                     Toast.makeText(getApplication(), "Vui lòng nhập Mô tả!", Toast.LENGTH_SHORT).show();
                 } else {
                     RoomAvailable roomAvailable = new RoomAvailable();
@@ -239,7 +258,7 @@ public class InforRoomAvailable extends AppCompatActivity {
                     roomAvailable.setAvatar(strAvatar);
                     roomAvailable.setImages(imageRoom);
 
-                    if (cbRoomAvailable.isChecked() && strIdFragment.equalsIgnoreCase("available")){
+                    if (cbRoomAvailable.isChecked() && strIdFragment.equalsIgnoreCase("available")) {
                         roomAvailable.setStatus("0");
                         MyApplication.get(getApplication()).getRoomAvailable().child(strId).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
                             @Override
@@ -250,17 +269,17 @@ public class InforRoomAvailable extends AppCompatActivity {
 
                                 tvTitle.setText(strTitle);
                                 getSupportActionBar().setTitle(strTitle);
-                                tvPrice.setText("Giá phòng: "+strPrice+" VNĐ/Tháng");
-                                tvAddress.setText("Địa chỉ: "+strAddress);
-                                tvPhone.setText("Điện thoại: "+strPhone);
-                                tvDescription.setText("Mô tả: "+strDescription);
+                                tvPrice.setText("Giá phòng: " + strPrice + " VNĐ/Tháng");
+                                tvAddress.setText("Địa chỉ: " + strAddress);
+                                tvPhone.setText("Điện thoại: " + strPhone);
+                                tvDescription.setText("Mô tả: " + strDescription);
                                 tvStatus.setText("Tình trạng: Phòng đang trống");
                             }
                         });
 
-                    } else if (strIdFragment.equalsIgnoreCase("available") && cbRoomRenting.isChecked()){
-                        long categoryId = GlobalFuntion.getId();
-                        roomAvailable.setIdroom(String.valueOf(categoryId));
+                    } else if (strIdFragment.equalsIgnoreCase("available") && cbRoomRenting.isChecked()) {
+
+                        roomAvailable.setIdroom(strId);
                         roomAvailable.setStatus("1");
 
                         MyApplication.get(getApplication()).getRoomAvailable().child(strId).removeValue(new DatabaseReference.CompletionListener() {
@@ -269,7 +288,7 @@ public class InforRoomAvailable extends AppCompatActivity {
                             }
                         });
 
-                        MyApplication.get(getApplication()).getRoomRenting().child(String.valueOf(categoryId)).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
+                        MyApplication.get(getApplication()).getRoomRenting().child(String.valueOf(strId)).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                 Toast.makeText(getApplication(),
@@ -278,7 +297,7 @@ public class InforRoomAvailable extends AppCompatActivity {
                                 GlobalFuntion.startActivity(getApplication(), MainActivity.class);
                             }
                         });
-                    } else if (strIdFragment.equalsIgnoreCase("renting") && cbRoomRenting.isChecked()){
+                    } else if (strIdFragment.equalsIgnoreCase("renting") && cbRoomRenting.isChecked()) {
                         roomAvailable.setStatus("1");
                         MyApplication.get(getApplication()).getRoomRenting().child(strId).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
                             @Override
@@ -289,16 +308,16 @@ public class InforRoomAvailable extends AppCompatActivity {
 
                                 tvTitle.setText(strTitle);
                                 getSupportActionBar().setTitle(strTitle);
-                                tvPrice.setText("Giá phòng: "+strPrice+" VNĐ/Tháng");
-                                tvAddress.setText("Địa chỉ: "+strAddress);
-                                tvPhone.setText("Điện thoại: "+strPhone);
-                                tvDescription.setText("Mô tả: "+strDescription);
+                                tvPrice.setText("Giá phòng: " + strPrice + " VNĐ/Tháng");
+                                tvAddress.setText("Địa chỉ: " + strAddress);
+                                tvPhone.setText("Điện thoại: " + strPhone);
+                                tvDescription.setText("Mô tả: " + strDescription);
                                 tvStatus.setText("Tình trạng: Đã cho thuê");
                             }
                         });
-                    } else if (strIdFragment.equalsIgnoreCase("renting") && cbRoomAvailable.isChecked()){
-                        long categoryId = GlobalFuntion.getId();
-                        roomAvailable.setIdroom(String.valueOf(categoryId));
+                    } else if (strIdFragment.equalsIgnoreCase("renting") && cbRoomAvailable.isChecked()) {
+
+                        roomAvailable.setIdroom(String.valueOf(strId));
                         roomAvailable.setStatus("0");
 
                         MyApplication.get(getApplication()).getRoomRenting().child(strId).removeValue(new DatabaseReference.CompletionListener() {
@@ -308,7 +327,7 @@ public class InforRoomAvailable extends AppCompatActivity {
                             }
                         });
 
-                        MyApplication.get(getApplication()).getRoomAvailable().child(String.valueOf(categoryId)).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
+                        MyApplication.get(getApplication()).getRoomAvailable().child(String.valueOf(strId)).setValue(roomAvailable, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                 Toast.makeText(getApplication(),
@@ -333,13 +352,13 @@ public class InforRoomAvailable extends AppCompatActivity {
         dialog.show();
     }
 
-    private void onClickCall(){
+    private void onClickCall() {
         String numberPhone = "tel:" + tvPhone.getText().toString().trim();
-        Log.d("+++","+++"+Uri.parse(numberPhone));
+        Log.d("+++", "+++" + Uri.parse(numberPhone));
 
-            Intent callIntent =new Intent(Intent.ACTION_DIAL);
-            callIntent.setData(Uri.parse(numberPhone));
-            startActivity(callIntent);
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        callIntent.setData(Uri.parse(numberPhone));
+        startActivity(callIntent);
 
     }
 
