@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timtroappdemo.Constant.GlobalFuntion;
@@ -89,7 +90,7 @@ public class RoomAddFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
         rcvPhoto.setLayoutManager(gridLayoutManager);
         rcvPhoto.setAdapter(mPhotoAddAdapter);
 
@@ -204,7 +205,6 @@ public class RoomAddFragment extends Fragment {
         String strAddress = edtAddress.getText().toString().trim();
         String strPhone = edtPhone.getText().toString().trim();
         String strDescription = edtDescription.getText().toString().trim();
-        Log.d("+++","+++"+uriListImageUpload);
         if (uriListImageUpload.size() != 0) {
             if (strTitle.isEmpty()) {
                 Toast.makeText(getActivity(), "Vui lòng nhập Tiêu đề!", Toast.LENGTH_SHORT).show();
@@ -239,8 +239,6 @@ public class RoomAddFragment extends Fragment {
                                 public void onSuccess(Uri uri) {
                                     Photo photo = new Photo(uri.toString());
                                     uriListImageDownload.add(photo);
-                                    Log.d("+++", "+++" + uriListImageDownload);
-
                                 }
                             });
                             // Image uploaded successfully
@@ -297,10 +295,10 @@ public class RoomAddFragment extends Fragment {
         edtPhone.setText(null);
         edtDescription.setText(null);
         imgAvatar.setImageResource(R.drawable.image_add_avatar);
-        rcvPhoto.setAdapter(null);
+        mPhotoAddAdapter.refresh();
+        rcvPhoto.setAdapter(mPhotoAddAdapter);
         btnSelectPhoto.setText("Thêm ảnh mô tả phòng");
         uriListImageUpload.clear();
         uriListImageDownload.clear();
-
     }
 }

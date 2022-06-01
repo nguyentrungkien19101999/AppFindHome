@@ -32,6 +32,10 @@ public class PhotoAddAdapter extends RecyclerView.Adapter<PhotoAddAdapter.PhotoA
         notifyDataSetChanged();
     }
 
+    public void refresh(){
+        mListPhoto.clear();
+    }
+
     @NonNull
     @Override
     public PhotoAddViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
